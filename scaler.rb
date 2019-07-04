@@ -32,7 +32,7 @@ class Scaler
             print droplet.networks.v4[0].ip_address.to_s + "\t"
             print droplet.status.to_s + "\t"
             print droplet.region.slug.to_s + "\t"
-
+            
             tag_count = 0
             droplet.tags.each do |tag|
                 if tag_count != 0 then
@@ -41,7 +41,7 @@ class Scaler
                 print tag.to_s
                 tag_count += 1
             end
-
+            
             print "\n"
             /
             @droplet_count += 1
@@ -54,7 +54,7 @@ class Scaler
 
         count = 0
         @droplets.each do |droplet|
-            print droplet.name.to_s + "\t"
+            #print droplet.name.to_s + "\t"
 
             address = "http://" + droplet.networks.v4[0].ip_address.to_s + ":" + @netdata_port.to_s + \
                 "/api/v1/data?chart=system.cpu&after=-60&points=1&group=average&format=json&options=seconds,jsonwrap"
@@ -69,7 +69,7 @@ class Scaler
                 next if usage > 100
                 cpu_usage += usage
             end
-            puts cpu_usage.round(2).to_s + "%"
+            #puts cpu_usage.round(2).to_s + "%"
             @cpu_averages[count] = cpu_usage
             count += 1
         end
