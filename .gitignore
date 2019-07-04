@@ -50,4 +50,4 @@ Gemfile.lock
 .rvmrc
 
 *.code-workspace
-config/config.yml
+config.yml
