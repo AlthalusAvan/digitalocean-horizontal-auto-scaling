@@ -26,24 +26,22 @@ class Scaler
     def get_droplets
         @droplets = @client.droplets.all(tag_name: @tag)
         @droplets.each do |droplet|
-            /
-            print droplet.id.to_s + "\t"
-            print droplet.name.to_s + "\t"
-            print droplet.networks.v4[0].ip_address.to_s + "\t"
-            print droplet.status.to_s + "\t"
-            print droplet.region.slug.to_s + "\t"
+            # print droplet.id.to_s + "\t"
+            # print droplet.name.to_s + "\t"
+            # print droplet.networks.v4[0].ip_address.to_s + "\t"
+            # print droplet.status.to_s + "\t"
+            # print droplet.region.slug.to_s + "\t"
             
-            tag_count = 0
-            droplet.tags.each do |tag|
-                if tag_count != 0 then
-                    print ","
-                end
-                print tag.to_s
-                tag_count += 1
-            end
+            # tag_count = 0
+            # droplet.tags.each do |tag|
+            #     if tag_count != 0 then
+            #         print ","
+            #     end
+            #     print tag.to_s
+            #     tag_count += 1
+            # end
             
-            print "\n"
-            /
+            # print "\n"
             @droplet_count += 1
         end
         puts "Current #{@tag} droplets active: #{@droplet_count}"
