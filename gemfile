@@ -1,0 +1,2 @@
+gem 'droplet_kit'
+gem 'rest-client'
