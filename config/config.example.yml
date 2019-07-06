@@ -1,0 +1,21 @@
+# Needed for any functionality
+DO_API_Key: "DO-API-KEY" # https://cloud.digitalocean.com/account/api/tokens - requires read and write access
+
+# Autoscaling parameters
+Autoscale_Tag: "web"
+Additional_Tags: ["autoscaling", "nginx"]
+CPU_Threshold_Max: 60
+CPU_Threshold_Min: 40
+Max_Droplets: 4
+Min_Droplets: 2
+
+# Droplet Creation Configuration
+Region: "ams3" # List by running "ruby scaler.rb list regions"
+Keys: ["KEY-ID"] # List by running "ruby scaler.rb list keys"
+Image: "IMAGE-ID" # List by running "ruby scaler.rb list snapshot", or "scaler.rb list images" to include public images
+Droplet_Size: "s-2vcpu-2gb" # List by running "ruby scaler.rb list sizes"
+Prefix: "autoscale"
+Private_Networking: true
+
+#Other Configuration
+Netdata_Port: 19999 # The port on which NetData runs. Must be the same for all VMs.
