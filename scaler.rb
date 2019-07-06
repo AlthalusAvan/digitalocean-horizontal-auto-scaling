@@ -25,6 +25,8 @@ class Scaler
         @tag = config["Autoscale_Tag"]
         @all_tags = config["Additional_Tags"].unshift(@tag)
 
+        @verbose = $input_array.include? "--verbose"
+
         @droplets = []
         @droplet_count = 0
         
@@ -35,7 +37,7 @@ class Scaler
     def get_droplets
         @droplets = @client.droplets.all(tag_name: @tag)
         @droplets.each do |droplet|
-            if $input_array.include? "--verbose"
+            if @verbose
                 print droplet.id.to_s + "\t"
                 print droplet.name.to_s + "\t"
                 print droplet.networks.v4[0].ip_address.to_s + "\t"
@@ -66,7 +68,7 @@ class Scaler
 
         count = 0
         @droplets.each do |droplet|
-            print droplet.name.to_s + "\t" if $input_array.include? "--verbose"
+            print droplet.name.to_s + "\t" if @verbose
 
             address = "http://" + droplet.networks.v4[0].ip_address.to_s + ":" + @netdata_port.to_s + \
                 "/api/v1/data?chart=system.cpu&after=-60&points=1&group=average&format=json&options=seconds,jsonwrap"
@@ -83,7 +85,7 @@ class Scaler
                     cpu_usage += usage
                 end
             end
-            puts cpu_usage.round(2).to_s + "%" if $input_array.include? "--verbose"
+            puts cpu_usage.round(2).to_s + "%" if @verbose
             @cpu_averages[count] = cpu_usage
             count += 1
         end
@@ -117,7 +119,7 @@ class Scaler
         )
 
         droplet_create = @client.droplets.create(droplet)
-        puts "Scaled up"
+        puts "Scaled up - added droplet #{droplet_create.name.to_s}"
     end
 
     def scale_down
