@@ -72,22 +72,28 @@ class Scaler
 
             address = "http://" + droplet.networks.v4[0].ip_address.to_s + ":" + @netdata_port.to_s + \
                 "/api/v1/data?chart=system.cpu&after=-60&points=1&group=average&format=json&options=seconds,jsonwrap"
-            cpu_data_raw = RestClient.get(address)            
-            #puts cpu_data_raw
-
-            cpu_data_parsed = JSON.parse(cpu_data_raw)
-            #puts cpu_data_parsed
             
-            cpu_usage = 0;
-            if !cpu_data_parsed["result"]["data"].empty?
-                cpu_data_parsed["result"]["data"][0].each do |usage|
-                    next if usage > 100
-                    cpu_usage += usage
+            begin
+                cpu_data_raw = RestClient.get(address)            
+                #puts cpu_data_raw
+
+                cpu_data_parsed = JSON.parse(cpu_data_raw)
+                #puts cpu_data_parsed
+                
+                cpu_usage = 0;
+                if !cpu_data_parsed["result"]["data"].empty?
+                    cpu_data_parsed["result"]["data"][0].each do |usage|
+                        next if usage > 100
+                        cpu_usage += usage
+                    end
                 end
-            end
-            puts cpu_usage.round(2).to_s + "%" if @verbose
-            @cpu_averages[count] = cpu_usage
-            count += 1
+
+                puts cpu_usage.round(2).to_s + "%" if @verbose
+                @cpu_averages[count] = cpu_usage
+                count += 1
+            rescue => e
+                puts e.response
+            end            
         end
         @cpu_overall_average = @cpu_averages.inject(0){|sum,x| sum + x } / @droplet_count
         puts "Overall average: #{@cpu_overall_average.round(2)}%"
