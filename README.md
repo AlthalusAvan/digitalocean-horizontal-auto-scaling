@@ -110,4 +110,4 @@ Shows more logging information for diagnostics. Can be quite chatty, don't use t
 - Add advanced error handling with better logging for debugging
 - Add health checks with automatic restarting of unhealthy nodes
 - Add scaling interval to limit how quickly nodes can be added / removed
-- Reformat output lists as (https://github.com/tj/terminal-table)[tables] for clearer output
+- Reformat output lists as [tables](https://github.com/tj/terminal-table) for clearer output
