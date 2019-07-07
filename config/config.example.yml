@@ -14,7 +14,7 @@ Region: "ams3" # List by running "ruby scaler.rb list regions"
 Keys: ["KEY-ID"] # List by running "ruby scaler.rb list keys"
 Image: "IMAGE-ID" # List by running "ruby scaler.rb list snapshot", or "scaler.rb list images" to include public images
 Droplet_Size: "s-2vcpu-2gb" # List by running "ruby scaler.rb list sizes"
-Prefix: "autoscale"
+Prefix: "autoscale" # Droplets will be named {prefix}-{6 character hex string}
 Private_Networking: true
 
 #Other Configuration

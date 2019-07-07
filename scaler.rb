@@ -148,6 +148,7 @@ class Scaler
     end
 
     def get_ssh_keys
+        print "ID \t Name \n"
         keys = @client.ssh_keys.all
         keys.each do |key|
             print key.id.to_s + "\t"
@@ -156,6 +157,7 @@ class Scaler
     end
 
     def get_images
+        print "ID \t Name \t Type \t Size(GB) \t Distribution \n"
         images = @client.images.all
         images.each do |image|
             print image.id.to_s + "\t"
@@ -167,6 +169,7 @@ class Scaler
     end
 
     def get_snapshots
+        print "ID \t Name \t Size(GB) \t Min Disk Size(GB) \t Type \n"
         snapshots = @client.snapshots.all
         snapshots.each do |snap|
             print snap.id.to_s + "\t"
@@ -178,6 +181,7 @@ class Scaler
     end
 
     def get_regions
+        print "Slug \t Name \t Available \n"
         regions = @client.regions.all
         regions.each do |region|
             print region.slug.to_s + "\t"
@@ -187,13 +191,14 @@ class Scaler
     end
 
     def get_sizes
+        print "Slug \t VCpus \t Memory(MB) \t Disk(GB) \t Price($/Mo) \n"
         sizes = @client.sizes.all
         sizes.each do |size|
             print size.slug.to_s + "\t"
-            print size.vcpus.to_s + "vcpus\t"
-            print size.memory.to_s + "MB RAM\t"
-            print size.disk.to_s + "GB disk\t"
-            print size.price_monthly.to_s + "$/mo\n"
+            print size.vcpus.to_s + "\t"
+            print size.memory.to_s + "\t"
+            print size.disk.to_s + "\t"
+            print size.price_monthly.to_s + "\n"
         end
     end
 end
