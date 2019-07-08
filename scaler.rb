@@ -1,8 +1,9 @@
 require "droplet_kit"
 require "fileutils"
 require "yaml"
-require 'rest-client'
-require 'json'
+require "rest-client"
+require "json"
+require "terminal-table"
 
 $input_array = ARGV
 
@@ -133,7 +134,7 @@ class Scaler
 
         to_remove = 0
         to_remove_name = ""
-        date_to_remove = Time.parse('01-01-1970')
+        date_to_remove = Time.parse("01-01-1970")
         @droplets.each do |droplet|
             created_at = Time.parse(droplet.created_at)
             if created_at > date_to_remove
@@ -148,58 +149,48 @@ class Scaler
     end
 
     def get_ssh_keys
-        print "ID \t Name \n"
+        rows = []
         keys = @client.ssh_keys.all
-        keys.each do |key|
-            print key.id.to_s + "\t"
-            print key.name.to_s + "\n"
+        keys.each_with_index do |key, i|
+            rows << [key.id.to_s, key.name.to_s]
         end
+        puts Terminal::Table.new :title => "SSH Keys", :headings => ["ID", "Name"], :rows => rows
     end
 
     def get_images
-        print "ID \t Name \t Type \t Size(GB) \t Distribution \n"
+        rows = []
         images = @client.images.all
         images.each do |image|
-            print image.id.to_s + "\t"
-            print image.name.to_s + "\t"
-            print image.type.to_s + "\t"
-            print image.size_gigabytes.to_s + "\t"
-            print image.distribution.to_s + "\n"
+            rows << [image.id.to_s, image.name.to_s, image.type.to_s, image.size_gigabytes.to_s, image.distribution.to_s]
         end
+        puts Terminal::Table.new :title => "Images", :headings => ["ID", "Name", "Type", "Size (GB)", "Distribution"], :rows => rows
     end
 
     def get_snapshots
-        print "ID \t Name \t Size(GB) \t Min Disk Size(GB) \t Type \n"
+        rows = []
         snapshots = @client.snapshots.all
         snapshots.each do |snap|
-            print snap.id.to_s + "\t"
-            print snap.name.to_s + "\t"
-            print snap.size_gigabytes.to_s + "\t"
-            print snap.min_disk_size.to_s + "\t"
-            print snap.resource_type.to_s + "\n"
+            rows << [snap.id.to_s, snap.name.to_s, snap.size_gigabytes.to_s, snap.min_disk_size.to_s, snap.resource_type.to_s]
         end
+        puts Terminal::Table.new :title => "Snapshots", :headings => ["ID", "Name", "Size (GB)", "Min Disk Size (GB)", "Distribution"], :rows => rows
     end
 
     def get_regions
-        print "Slug \t Name \t Available \n"
+        rows = []
         regions = @client.regions.all
         regions.each do |region|
-            print region.slug.to_s + "\t"
-            print region.name.to_s + "\t"
-            print region.available.to_s + "\n"
+            rows << [region.slug.to_s, region.name.to_s, region.available.to_s]
         end
+        puts Terminal::Table.new :title => "Regions", :headings => ["Slug", "Name", "Available"], :rows => rows
     end
 
     def get_sizes
-        print "Slug \t VCpus \t Memory(MB) \t Disk(GB) \t Price($/Mo) \n"
+        rows = []
         sizes = @client.sizes.all
         sizes.each do |size|
-            print size.slug.to_s + "\t"
-            print size.vcpus.to_s + "\t"
-            print size.memory.to_s + "\t"
-            print size.disk.to_s + "\t"
-            print size.price_monthly.to_s + "\n"
+            rows << [size.slug.to_s, size.vcpus.to_s, size.memory.to_s, size.disk.to_s, size.price_monthly.to_s]
         end
+        puts Terminal::Table.new :title => "Sizes", :headings => ["Slug", "VCPUs", "Memory (MB)", "Disk (GB)", "Price ($/mo)"], :rows => rows
     end
 end
 
