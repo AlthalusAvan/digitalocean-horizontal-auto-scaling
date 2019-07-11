@@ -9,7 +9,7 @@ $input_array = ARGV
 
 class Scaler
     def initialize
-        config = YAML::load(File.open("config/config.yml"))
+        config = YAML::load(File.open(__dir__ + "/config/config.yml"))
         @client = DropletKit::Client.new(access_token: config["DO_API_Key"])
 
         @cpu_threshold_max = config["CPU_Threshold_Max"]
